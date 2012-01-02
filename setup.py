@@ -12,6 +12,6 @@ setup(
     author_email='jeremy@33ad.org',
     url='https://github.com/nod/tornroutes',
     packages=['tornroutes'],
-    package_dir={'tornroutes': 'src/tornroutes'},
+    install_requires=['tornado',]
     )
 
