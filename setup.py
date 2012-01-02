@@ -9,6 +9,7 @@ setup(
     author='Jeremy Kelley',
     author_email='jeremy@33ad.org',
     url='https://github.com/nod/tornroutes',
-    py_modules=['tornroutes']
+    packages=['tornroutes'],
+    package_dir={'tornroutes': 'src/tornroutes'},
     )
 
