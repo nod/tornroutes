@@ -6,7 +6,11 @@ Provides a route decorator for the Tornado framework.
 
 Just place this directory in your python path or run the following:
 
-    sudo python setup.py install
+	`sudo python setup.py install`
+
+or
+
+	`pip install -e git+git://github.com/nod/tornroutes.git#egg=tornroutes`
 
 ## Testing
 
