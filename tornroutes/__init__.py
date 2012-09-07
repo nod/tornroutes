@@ -20,6 +20,7 @@ class route(object):
     Example
     -------
 
+    ```python
     @route('/some/path')
     class SomeRequestHandler(RequestHandler):
         def get(self):
@@ -34,6 +35,7 @@ class route(object):
             self.redirect(goto)
 
     my_routes = route.get_routes()
+    ```
 
     Credit
     -------
@@ -75,4 +77,18 @@ def route_redirect(from_, to, name=None):
         tornado.web.RedirectHandler,
         dict(url=to),
         name=name ))
+
+
+def generic_route(uri, template):
+
+    @route(uri)
+    class generic_handler(tornado.web.RequestHandler):
+        _template = template
+        def get(self):
+            return self.render(self._template)
+
+    return generic_handler
+
+
+
 
