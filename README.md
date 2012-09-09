@@ -4,17 +4,17 @@ Provides a route decorator for the Tornado framework.
 
 ## Installation
 
-Just place this directory in your python path or run the following:
+This package is available via pip with `pip install tornroutes` for the stable
+version.
 
-	`sudo python setup.py install`
+You can also install the latest source (also usually very stable) by the following:
 
-or
-
-	`pip install -e git+git://github.com/nod/tornroutes.git#egg=tornroutes`
+    pip install -e git+git://github.com/nod/tornroutes.git#egg=tornroutes
 
 ## Testing
 
-There are tests written.  Run them with nosetests.
+Pretty well tested.  You can run them with `nosetests` if you have nose
+installed.
 
 ## Usage
 
@@ -23,25 +23,25 @@ The best source of information is the comments in tornroutes/__init__.py.
 
 ### Here's a simple example.
 
-    ```python
-    import tornado.web
-    from tornroutes import route
+```python
+import tornado.web
+from tornroutes import route
 
-    @route('/blah')
-    class SomeHandler(tornado.web.RequestHandler):
-        pass
+@route('/blah')
+class SomeHandler(tornado.web.RequestHandler):
+    pass
 
-    t = tornado.web.Application(route.get_routes(), {'some app': 'settings'}
-    ```
+t = tornado.web.Application(route.get_routes(), {'some app': 'settings'}
+```
 
 ### Simple `generic_route` example
 
 carried over from above, if you have a template at `generic.html` and you want
 it to get rendered at a certain uri, do the following:
 
-    ```python
-    generic_route('/generic/?', 'generic.html')
-    ```
+```python
+generic_route('/generic/?', 'generic.html')
+```
 
 ### Simple `authed_generic_route` example
 
@@ -51,20 +51,20 @@ projects end up defining something like `BaseHandler` that extends
 
 At it's simplest, this handler would lool like:
 
-	```python
-	class BaseHandler(RequestHandler):
-		def get_current_user(self):
-			""" do stuff here to authenticate the user """
-			return None # NONE MAY PASS
-	```
+```python
+class BaseHandler(RequestHandler):
+    def get_current_user(self):
+        """ do stuff here to authenticate the user """
+        return None # NONE MAY PASS
+```
 
 Then, to provide authenticated generic routes:
 
-	```python
-	from tornroutes import authed_generic_route
+```python
+from tornroutes import authed_generic_route
 
-	authed_generic_route('/locked', 'some_locked_template.html', BaseHandler)
-	```
+authed_generic_route('/locked', 'some_locked_template.html', BaseHandler)
+```
 
 Now, you'll have a uri being answered with a render of
 `some_locked_template.html` if the user is authenticated, otherwise, they get
