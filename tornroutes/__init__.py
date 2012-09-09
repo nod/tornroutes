@@ -79,10 +79,12 @@ def route_redirect(from_, to, name=None):
         name=name ))
 
 
-def generic_route(uri, template):
+def generic_route(uri, template, handler=None):
+
+    h_ = handler or tornado.web.RequestHandler
 
     @route(uri, name=uri)
-    class generic_handler(tornado.web.RequestHandler):
+    class generic_handler(h_):
         _template = template
         def get(self):
             return self.render(self._template)
