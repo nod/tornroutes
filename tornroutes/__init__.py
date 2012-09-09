@@ -78,19 +78,31 @@ def route_redirect(from_, to, name=None):
         dict(url=to),
         name=name ))
 
-
-def generic_route(uri, template, handler=None):
-
+# maps a template to a route.
+def generic_route(uri, template, handler = None):
     h_ = handler or tornado.web.RequestHandler
-
     @route(uri, name=uri)
     class generic_handler(h_):
         _template = template
         def get(self):
             return self.render(self._template)
-
     return generic_handler
 
+def authed_generic_route(uri, template, handler):
+    """
+    Provides authenticated mapping of template render to route.
 
+    :param: uri: the route path
+    :param: template: the template path to render
+    :param: handler: a subclass of tornado.web.RequestHandler that provides all
+        the necessary methods for resolving current_user
+    """
+    @route(uri, name=uri)
+    class authed_handler(handler):
+        _template = template
+        @tornado.web.authenticated
+        def get(self):
+            return self.render(self._template)
+    return authed_handler
 
 

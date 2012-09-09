@@ -7,9 +7,15 @@ import unittest
 import tornado.web
 from tornado.testing import AsyncHTTPTestCase
 
-from tornroutes import route, route_redirect, generic_route
+from tornroutes import (
+    route, route_redirect,
+    generic_route, authed_generic_route
+    )
 
 # NOTE - right now, the route_redirect function is not tested.
+
+
+
 
 class RouteTests(unittest.TestCase):
 
@@ -52,11 +58,21 @@ class GenericRouteTests(unittest.TestCase):
         assert len(route.get_routes()) == 1
 
 
-class TestGenericRouteRender(AsyncHTTPTestCase):
+class BogonAuthedHandler(tornado.web.RequestHandler):
+    """
+    used in testing authed_generic_route(...)
+    """
+    def get_current_user(self):
+        return None
+
+
+class TestGenericRoute(AsyncHTTPTestCase):
+
     def get_app(self):
         return tornado.web.Application(
             route.get_routes(),
-            template_path = os.path.dirname(__file__)
+            template_path = os.path.dirname(__file__),
+            login_url = '/faked_for_authed_generic',
             )
 
     @classmethod
@@ -66,6 +82,11 @@ class TestGenericRouteRender(AsyncHTTPTestCase):
         # must be done here prior to get_app being called
         generic_route('/generic', 'generic_1.html')
         generic_route('/other', 'generic_2.html')
+        authed_generic_route('/locked', 'generic_1.html', BogonAuthedHandler)
+
+    def test_authed_generic(self):
+        response = self.fetch('/locked', follow_redirects=False)
+        assert response.code == 302, "Didn't redirect to login page"
 
     def test_generic_render(self):
         generic_1 = open(
@@ -82,4 +103,5 @@ class TestGenericRouteRender(AsyncHTTPTestCase):
         response = self.fetch('/other')
         assert generic_2.strip() == response.body.strip()
         assert response.code == 200
+
 
