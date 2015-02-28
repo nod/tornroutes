@@ -1,11 +1,13 @@
 
-# make sure we get our local tornroutes before anything else
-import sys, os.path
-sys.path = [os.path.abspath(os.path.dirname(__file__))] + sys.path
-
+import os.path
+import sys
 import unittest
+
 import tornado.web
 from tornado.testing import AsyncHTTPTestCase
+
+# make sure we get our local tornroutes before anything else
+sys.path = [os.path.abspath(os.path.dirname(__file__))] + sys.path
 
 from tornroutes import (
     route, route_redirect,
@@ -13,8 +15,6 @@ from tornroutes import (
     )
 
 # NOTE - right now, the route_redirect function is not tested.
-
-
 
 
 class RouteTests(unittest.TestCase):
