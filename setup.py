@@ -1,5 +1,5 @@
 from distutils.core import setup
-VERSION = open('VERSION').read().lstrip('version: ').rstrip('\n')
+VERSION = "0.5.1"
 setup(
     name = 'tornroutes',
     version = VERSION,
