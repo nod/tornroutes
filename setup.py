@@ -7,7 +7,7 @@ setup(
     author = 'Jeremy Kelley',
     author_email = 'jeremy@33ad.org',
     url = 'https://github.com/nod/tornroutes',
-    download_url = 'https://github.com/nod/tornroutes/tarball/0.4',
+    download_url = 'https://github.com/nod/tornroutes/tarball/0.5',
     license = "http://www.apache.org/licenses/LICENSE-2.0",
     packages = ['tornroutes'],
     keywords = ['tornado', 'routes', 'http']
