@@ -10,3 +10,5 @@
 
 build/*
 venv
+MANIFEST
+dist

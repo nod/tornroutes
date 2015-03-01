@@ -10,7 +10,6 @@ setup(
     download_url = 'https://github.com/nod/tornroutes/tarball/0.4',
     license = "http://www.apache.org/licenses/LICENSE-2.0",
     packages = ['tornroutes'],
-    keywords = ['tornado', 'routes', 'http'],
-    install_requires = ['tornado']
+    keywords = ['tornado', 'routes', 'http']
     )
 
