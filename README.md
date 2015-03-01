@@ -19,11 +19,20 @@ pip install -e git+git://github.com/nod/tornroutes.git#egg=tornroutes
 Pretty well tested.  You can run them with `nosetests` if you have nose
 installed.
 
+The following run in the base directory of the repo will run the tests:
+
+```bash
+virtualenv venv
+source venv/bin/activate
+pip install -r requirements.txt
+nosetests
+```
+
 ## Usage
 
 The best source of information is the comments in tornroutes/__init__.py.
 
-### Here's a simple example.
+### simple example
 
 ```python
 import tornado.web
@@ -36,7 +45,7 @@ class SomeHandler(tornado.web.RequestHandler):
 t = tornado.web.Application(route.get_routes(), {'some app': 'settings'}
 ```
 
-### Simple `generic_route` example
+### `generic_route` example
 
 Example carried over from above, if you have a template at `generic.html` and
 you want it to get rendered at a certain uri, do the following:
@@ -45,7 +54,7 @@ you want it to get rendered at a certain uri, do the following:
 generic_route('/generic/?', 'generic.html')
 ```
 
-### Simple `authed_generic_route` example
+### `authed_generic_route` example
 
 Often, tornado projects end up defining something like `BaseHandler` that
 extends `tornado.web.RequestHandler` and defines methods necessary for
