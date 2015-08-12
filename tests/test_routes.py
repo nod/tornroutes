@@ -48,6 +48,29 @@ class RouteTests(unittest.TestCase):
         self.assertTrue( t.reverse_url('other') )
 
 
+class ParameterizedRouteTests(AsyncHTTPTestCase):
+
+    def get_app(self):
+        return tornado.web.Application(route.get_routes())
+
+    @classmethod
+    def setUpClass(cls):
+        route._routes = []
+
+        @route(r'/redirect/(?P<param>\w+)', name='param')
+        class ParamRedirectHandler(tornado.web.RequestHandler):
+            def get(self, param):
+                self.redirect(self.reverse_url(param))
+
+        @route('/abc', name='abc')
+        class AbcFake(object):
+            pass
+
+    def test_param_passed(self):
+        response = self.fetch('/redirect/abc', follow_redirects=False)
+        assert response.code == 302, "Parameter passed through to handler"
+
+
 class GenericRouteTests(unittest.TestCase):
 
     def setUp(self):
@@ -97,11 +120,11 @@ class TestGenericRoute(AsyncHTTPTestCase):
             ).read()
 
         response = self.fetch('/generic')
-        assert generic_1.strip() == response.body.strip()
+        assert bytearray(generic_1.strip(), encoding='utf-8') == response.body.strip()
         assert response.code == 200
 
         response = self.fetch('/other')
-        assert generic_2.strip() == response.body.strip()
+        assert bytearray(generic_2.strip(), encoding='utf-8') == response.body.strip()
         assert response.code == 200
 
 
