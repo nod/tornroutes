@@ -2,6 +2,7 @@
 import os.path
 import sys
 import unittest
+import json
 
 import tornado.web
 from tornado.testing import AsyncHTTPTestCase
@@ -128,3 +129,27 @@ class TestGenericRoute(AsyncHTTPTestCase):
         assert response.code == 200
 
 
+class KeywordArgsRouteTests(AsyncHTTPTestCase):
+    def get_app(self):
+        return tornado.web.Application(route.get_routes())
+
+    @classmethod
+    def setUpClass(cls):
+        route._routes = []
+
+        @route('/abc', name='abc', kwargs={'data': 'test'})
+        class KeywordArgsHandler(tornado.web.RequestHandler):
+            def initialize(self, **kwargs):
+                self.data = kwargs.get('data', None)
+
+            def get(self):
+                self.write({'abc': {'data': self.data}})
+
+
+    def test_num_routes(self):
+        self.assertTrue( len(route.get_routes()) == 1 )
+
+    def test_kwargs_passed(self):
+        response = self.fetch('/abc', follow_redirects=False)
+        assert response.code == 200
+        assert json.loads(response.body) == {"abc": {"data": "test"}}
