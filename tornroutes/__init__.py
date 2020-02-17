@@ -53,19 +53,20 @@ class route(object):
 
     _routes = []
 
-    def __init__(self, uri, name=None):
+    def __init__(self, uri, name=None, kwargs={}):
         self._uri = uri
         self.name = name
+        self.kwargs = kwargs
 
     def __call__(self, _handler):
         """gets called when we class decorate"""
         name = self.name or _handler.__name__
-        self._routes.append(tornado.web.url(self._uri, _handler, name=name))
+        self._routes.append(tornado.web.url(self._uri, _handler, self.kwargs, name=name))
         return _handler
 
     @classmethod
-    def get_routes(self):
-        return self._routes
+    def get_routes(cls):
+        return cls._routes
 
 # route_redirect provided by Peter Bengtsson via the Tornado mailing list
 # and then improved by Ben Darnell.
@@ -111,5 +112,3 @@ def authed_generic_route(uri, template, handler):
         def get(self):
             return self.render(self._template)
     return authed_handler
-
-
